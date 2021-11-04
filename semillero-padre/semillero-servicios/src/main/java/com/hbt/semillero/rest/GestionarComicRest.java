@@ -17,20 +17,26 @@ import com.hbt.semillero.dto.ConsultaNombrePrecioComicDTO;
 import com.hbt.semillero.dto.ResultadoDTO;
 import com.hbt.semillero.dto.consultarComicTamanioNombreDTO;
 import com.hbt.semillero.ejb.IGestionarComicLocal;
-
+/**
+ * 
+ * <b>Descripción:<b> Clase que gestiona los servicios de comic rest
+ * <b>Caso de Uso:<b> semillero 2021
+ * @author SEDIEL
+ * @version
+ */
 @Path("/gestionarComic")
 public class GestionarComicRest {
-	
+	// esta linea no se que es lo que hace
 	@EJB
 	private IGestionarComicLocal gestionarComicLocal;
-
+	// metodo para administar la consulta de nombre y precio del comic rest
 	@GET
 	@Path("/consultarNombrePrecioComic")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ConsultaNombrePrecioComicDTO consultarNombrePrecioComic(@QueryParam("idComic") Long idComic) {
 		return this.gestionarComicLocal.consultarNombrePrecioComic(idComic);
 	}
-	
+	// metodo para administar la creacion del comic rest
 	@POST
 	@Path("/crearComic")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -45,13 +51,14 @@ public class GestionarComicRest {
 		}
 		return comicDTOResult;
 	} 
+	//metodo para administar la consulta de los  comics rest
 	@GET
 	@Path("/consultarComics")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<ComicDTO> consultarComics(){
 		return this.gestionarComicLocal.consultarComics();	
 	}
-	
+	//metodo para administar la eliminacion del comic rest
 	@POST
 	@Path("/eliminarComic")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -59,13 +66,14 @@ public class GestionarComicRest {
 	public  ResultadoDTO eliminarComic(@QueryParam("idComic") Long idComic){
 		return this.gestionarComicLocal.eliminarComic(idComic);	
 	}
+	//metodo para administar la consulta por nombre del comic rest
 	@GET
 	@Path("/consultarComicTamanioNombre")
 	@Produces(MediaType.APPLICATION_JSON)
-	
 	public  consultarComicTamanioNombreDTO consultarComicTamanioNombre(@QueryParam("lengthComic") Short lengthComic){
 		return this.gestionarComicLocal.consultarComicTamanioNombre(lengthComic);	
 	}
+	//metodo para administar la actualizacion del comic rest
 	@POST
 	@Path("/actualizarComic")
 	@Consumes(MediaType.APPLICATION_JSON)

@@ -17,14 +17,20 @@ import com.hbt.semillero.dto.ResultadoDTO;
 import com.hbt.semillero.dto.consultarComicTamanioNombreDTO;
 import com.hbt.semillero.entidad.Comic;
 import com.hbt.semillero.enums.EstadoEnum;
-
+/**
+ * 
+ * <b>Descripción:<b> Clase que contiene los servicios a ejecutarse dicha clase implementa la la interfaz para gestionar los comics de manera local
+ * <b>Caso de Uso:<b> semillero 2021
+ * @author SEDIEL
+ * @version
+ */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class GestionarComicBean  implements IGestionarComicLocal {
 
 	@PersistenceContext
 	public EntityManager em;
-
+	// servicio para consultar el nombre y precio de un comic referenciado por su SCId 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	@Override
 	public ConsultaNombrePrecioComicDTO consultarNombrePrecioComic(Long idComic) {
@@ -44,7 +50,7 @@ public class GestionarComicBean  implements IGestionarComicLocal {
 
 		return consultaNombrePrecioDTO;
 	}
-
+	// servicio para crear un comic 
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ComicDTO crearComic(ComicDTO comicDTO) throws Exception {
@@ -60,7 +66,7 @@ public class GestionarComicBean  implements IGestionarComicLocal {
 		comicDTOResult.setMensajeEjecucion("El comic ha sido creado exitosamente");
 		return comicDTOResult;
 	}
-
+	// servicio para actualizar un comic referenciado por su SCId
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ResultadoDTO actualizarComic(Long idComic) {
@@ -79,7 +85,7 @@ public class GestionarComicBean  implements IGestionarComicLocal {
 		}
 		return update;
 	}
-    
+    // servicio para eliminar un comic referenciado por su SCId 
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ResultadoDTO eliminarComic(Long idComic) {
@@ -97,7 +103,7 @@ public class GestionarComicBean  implements IGestionarComicLocal {
 		}
 		return eliminado;
 	}
-
+	// servicio para consultar la lista de comics 
 	@SuppressWarnings("unchecked")
 	@Override
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)

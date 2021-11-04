@@ -8,10 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.hbt.semillero.dto.ComicDTO;
-import com.hbt.semillero.dto.ConsultaNombrePrecioComicDTO;
-import com.hbt.semillero.dto.ResultadoDTO;
-import com.hbt.semillero.dto.consultarComicTamanioNombreDTO;
-import com.hbt.semillero.ejb.IGestionarComicLocal;
 import com.hbt.semillero.enums.EstadoEnum;
 import com.hbt.semillero.enums.TematicaEnum;
 import junit.framework.Assert;
@@ -245,25 +241,12 @@ public class CreacionComicTest extends ComicDTO {
 	 * @param ListaComicDtOCreada
 	 * @return
 	 */
-	private static List<ComicDTO> verificarComicInactivos( List<ComicDTO> ListaComicDtOCreada) throws Exception{
+	private static List<ComicDTO> verificarComicInactivos( List<ComicDTO> ListaComicDtOCreada){
 		List<ComicDTO> listaComicDtOEstadoI= new ArrayList<>();
 		for (ComicDTO estado : ListaComicDtOCreada) {
 			if ( estado.getEstadoEnum() ==EstadoEnum.INACTIVO) 
 				listaComicDtOEstadoI.add(estado);
 		}
-		try {
-			List<ComicDTO> listaComicCreada = crearComic();
-			List<ComicDTO> listaComicsActivos = verificarComicActivos(listaComicCreada);
-			if (listaComicDtOEstadoI.size() == 4) {
-				throw new Exception("Se ha detectado que de" + listaComicCreada.size() + " comics se encontraron que " + 
-						listaComicsActivos.size() +  " se encuentran activos y " + listaComicDtOEstadoI.size() );
-			}
-			
-	   }
-		 catch (Exception e) {
-		    	
-		    	
-		    }
 		return   listaComicDtOEstadoI ;
 	}
 	/**
@@ -315,59 +298,29 @@ public class CreacionComicTest extends ComicDTO {
 	    	
 	    }
 	}
+	// test utilizado para capturar un mensaje de error controlado 
 	@Test
-	public void capturaMessageTest() throws Exception {
+	public void capturaMessageTest()  {
 		log.info("Inicia ejecucion del metodo capturaMessageTest");
+		log.info(" ");
 		List<ComicDTO> listaComicCreada= crearComic();
 		List<ComicDTO> listaComicsActivos= verificarComicActivos(listaComicCreada);
 		List<ComicDTO> listaComicsInactivos= verificarComicInactivos(listaComicCreada);
 		try {
-			if (listaComicsInactivos.size() == 4) {
-				throw new Exception("Se ha detectado que de" + listaComicCreada.size() + " comics se encontraron que " + 
-						listaComicsActivos.size() +  " se encuentran activos y " + listaComicsInactivos.size() );
-			}
-			
+			Assert.assertNotNull(listaComicCreada);
+			Assert.assertNotNull(listaComicsActivos);
+			Assert.assertNotNull(listaComicsInactivos);
+			throw new Exception("Se ha detectado que de :" + listaComicCreada.size() + " comics se encontraron que :" + 
+					listaComicsActivos.size() +  " se encuentran activos y :" + listaComicsInactivos.size()+ 
+					" inactivos. Los comics inactivos son : "+ listaComicsInactivos);	
 		} catch (Exception e) {
-			
+			System.out.println(e.getMessage());
 		}
-		log.info("Finaliza la ejecucion del metodo capturaMessageTest");	
+		log.info("Finaliza la ejecucion del metodo capturaMessageTest");
+		log.info(" ");
 	}
 	@AfterTest
 	public void finalizaPruebasUnitarias() {
 		log.info(":::::::::::::::::::::::::::: FINALIZAN PRUEBAS UNITARIAS 1 :::::::::::::::::::::::::::: ");
 	}
-	
-	
-	/**
-	 * 
-	 * Metodo encargado de comprobar en la lista, los comic que estan activos
-	 * <b>Caso de Uso</b>SEmillero 2021
-	 * @author SEDIEL
-	 *
-	 */
-	/**
-	@Test 
-	public void comprobarListarSoloActivos( ) {
-		log.info("Inicia ejecucion del metodo comprobarListarSoloActivos()");
-		Assert.assertEquals(EstadoEnum.ACTIVO, EstadoEnum.ACTIVO);
-		
-		try {
-			verificarComicActivos(CrearComic())(EstadoEnum.ACTIVO);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());	
-		}
-		
-		
-		log.info("Finaliza la ejecucion del metodo comprobarListarSoloActivos())");
-	}
-	/**
-	 * 
-	 * Metodo encargado de contener la clase main para imprimir los comic activos o inactivos 
-	 * <b>Caso de Uso</b>
-	 * @author SEDIEL
-	 * 
-	 * @param args
-	 */
-	
-
 }
