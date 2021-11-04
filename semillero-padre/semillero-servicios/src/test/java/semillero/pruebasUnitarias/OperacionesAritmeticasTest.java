@@ -1,3 +1,5 @@
+
+
 package semillero.pruebasUnitarias;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
@@ -23,7 +25,7 @@ public class OperacionesAritmeticasTest {
 	 */
 	private final static Logger log = Logger.getLogger(OperacionesAritmeticasTest.class);
 	
-	@BeforeTest
+	//@BeforeTest
 	public void inicializar() {
 		BasicConfigurator.configure(); // Inicializa el logger con una configuracion basica
 		log.info(":::::::::::::::::::::::::::: INICIAN PRUEBAS UNITARIAS :::::::::::::::::::::::::::: ");
@@ -38,7 +40,7 @@ public class OperacionesAritmeticasTest {
 	 *
 	 */
 //@Test(enabled = true) prueba inactiva
-	@Test 
+	//@Test 
 	public void validarResultadoSumaExitoso() {
 		log.info("Inicia ejecucion del metodo validarResultadoSumaExitoso()");
 		
@@ -63,7 +65,7 @@ public class OperacionesAritmeticasTest {
 	 * @author DIEGO FERNANDO
 	 *
 	 */
-	@Test
+	//@Test
 	public void validarResultadoSumaFallido() {
 		log.info("Inicia ejecucion del metodo validarResultadoSumaFallido()");
 		
@@ -91,7 +93,7 @@ public class OperacionesAritmeticasTest {
 	 * @author 57320
 	 *
 	 */
-	@AfterTest
+	//@AfterTest
 	public void finalizaPruebasUnitarias() {
 		log.info(":::::::::::::::::::::::::::: FINALIZAN PRUEBAS UNITARIAS :::::::::::::::::::::::::::: ");
 	}
