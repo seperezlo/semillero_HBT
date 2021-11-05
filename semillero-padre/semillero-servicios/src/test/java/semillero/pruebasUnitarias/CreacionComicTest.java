@@ -241,14 +241,27 @@ public class CreacionComicTest extends ComicDTO {
 	 * @param ListaComicDtOCreada
 	 * @return
 	 */
-	private static List<ComicDTO> verificarComicInactivos( List<ComicDTO> ListaComicDtOCreada){
-		List<ComicDTO> listaComicDtOEstadoI= new ArrayList<>();
-		for (ComicDTO estado : ListaComicDtOCreada) {
-			if ( estado.getEstadoEnum() ==EstadoEnum.INACTIVO) 
-				listaComicDtOEstadoI.add(estado);
-		}
-		return   listaComicDtOEstadoI ;
+	private static List<ComicDTO> verificarComicInactivos( List<ComicDTO> listaComicDtOCreada){
+		List<ComicDTO> listaComicDtOEstadoInactivos= new ArrayList<>();
+		
+			for (ComicDTO estado : listaComicDtOCreada) {
+				if ( estado.getEstadoEnum() ==EstadoEnum.INACTIVO) 
+					listaComicDtOEstadoInactivos.add(estado);
+			}
+		return   listaComicDtOEstadoInactivos ;
 	}
+	// se crea otro metodo para poder capturar el error, ya que si utilizamos
+	//el metodo verificarComicInactivos lo dejariamos inactivo porque solo se ejecutaria hasta el throw y no ejecutaria el return
+	
+	private void verificarComicMensajeError( List<ComicDTO> listaComicDtOCreada) throws Exception{
+		List<ComicDTO> listaComicsInactivos= verificarComicInactivos(listaComicDtOCreada);
+		List<ComicDTO> listaComicsActivos= verificarComicActivos(listaComicDtOCreada);
+			
+		throw new Exception("Se ha detectado que de :" + listaComicDtOCreada.size() + "   se encontraron que :" + 
+				listaComicsActivos.size() +  " se encuentran activos y :" + listaComicsInactivos.size()+ 
+				" inactivos. Los comics inactivos son : "+ listaComicsInactivos);
+	}
+			
 	/**
 	 * 
 	 * Metodo encargado de iniciar los log para las pruebas unitarias 
@@ -300,23 +313,24 @@ public class CreacionComicTest extends ComicDTO {
 	}
 	// test utilizado para capturar un mensaje de error controlado 
 	@Test
-	public void capturaMessageTest()  {
-		log.info("Inicia ejecucion del metodo capturaMessageTest");
+	public void capturaMessageTestInactivos()  {
+		log.info("Inicia ejecucion del metodo capturaMessageTestInactivos");
 		log.info(" ");
-		List<ComicDTO> listaComicCreada= crearComic();
-		List<ComicDTO> listaComicsActivos= verificarComicActivos(listaComicCreada);
-		List<ComicDTO> listaComicsInactivos= verificarComicInactivos(listaComicCreada);
+		
 		try {
+			// se instancia un objeto tipo comicDTO
+			List<ComicDTO> listaComicCreada= crearComic();
+			// se verifica que la lista no retorne vacia 
 			Assert.assertNotNull(listaComicCreada);
-			Assert.assertNotNull(listaComicsActivos);
-			Assert.assertNotNull(listaComicsInactivos);
-			throw new Exception("Se ha detectado que de :" + listaComicCreada.size() + " comics se encontraron que :" + 
-					listaComicsActivos.size() +  " se encuentran activos y :" + listaComicsInactivos.size()+ 
-					" inactivos. Los comics inactivos son : "+ listaComicsInactivos);	
+			// se captura el mensaje de error creado en el metodo verificarComicMensajeError
+			verificarComicMensajeError(listaComicCreada);
+			// se agrega la siguiente linea de codigo para verificar que se esta capturando un mensaje de error
+			Assert.fail("error se debio presentar una exception");
 		} catch (Exception e) {
+			System.out.println("********* Entro a la excepción *****");
 			System.out.println(e.getMessage());
 		}
-		log.info("Finaliza la ejecucion del metodo capturaMessageTest");
+		log.info("Finaliza la ejecucion del metodo capturaMessageTestInactivos");
 		log.info(" ");
 	}
 	@AfterTest

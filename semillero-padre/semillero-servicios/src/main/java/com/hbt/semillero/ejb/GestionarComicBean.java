@@ -13,6 +13,7 @@ import javax.persistence.Query;
 
 import com.hbt.semillero.dto.ComicDTO;
 import com.hbt.semillero.dto.ConsultaNombrePrecioComicDTO;
+import com.hbt.semillero.dto.ConsultarNombrePrecioEstadoDTO;
 import com.hbt.semillero.dto.ResultadoDTO;
 import com.hbt.semillero.dto.consultarComicTamanioNombreDTO;
 import com.hbt.semillero.entidad.Comic;
@@ -167,32 +168,53 @@ public class GestionarComicBean  implements IGestionarComicLocal {
 	@SuppressWarnings( "unchecked" )
 	
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public consultarComicTamanioNombreDTO consultarComicTamanioNombre(Short lengthComic) {
-		String consulta = "SELECT cd.nombre"
-						+ "FROM Comic cd";
-		consultarComicTamanioNombreDTO resultadoDTO = new consultarComicTamanioNombreDTO();
+	public consultarComicTamanioNombreDTO consultarComicTamanioNombre(Short lengthPalabra) {
+		String consulta = "SELECT s.nombre FROM Comic s";
+		consultarComicTamanioNombreDTO consultarComicTamanioNombre = new consultarComicTamanioNombreDTO();
 		try {
-			if (lengthComic > 200) {
-				throw new Exception("la longitud maxima permitida es de 200 caracteres");	
+			if (lengthPalabra > 150) {
+				throw new Exception("la longitud maxima permitida es de 150 caracteres");	
 			}
 			Query consultaQuery = em.createQuery(consulta);
 			List<String> nombresComisc = consultaQuery.getResultList();
-			for (String nombre :nombresComisc ) {
-				if (nombre.length() >= lengthComic) {
-					resultadoDTO.getComicsSuperanTamanio().add(nombre);
+			for (String nombre : nombresComisc ) {
+				if (nombre.length() >= lengthPalabra) {
+					consultarComicTamanioNombre.getComicsSuperanTamanio().add(nombre);
 				}else {
-					resultadoDTO.getComicsNoSuperanTamanio().add(nombre);	
+					consultarComicTamanioNombre.getComicsNoSuperanTamanio().add(nombre);	
 				}
 			}
-			resultadoDTO.setExitoso(true);
-			resultadoDTO.setMensajeEjecucion("se realizo la consulta exitosamente");
+			consultarComicTamanioNombre.setExitoso(true);
+			consultarComicTamanioNombre.setMensajeEjecucion("se realizo la consulta exitosamente");
 		}catch (Exception e) {
-			resultadoDTO.setExitoso(false);
-			resultadoDTO.setMensajeEjecucion("la consulta no se realizo, se presentaron errores tecnicos");	
+			consultarComicTamanioNombre.setExitoso(false);
+			consultarComicTamanioNombre.setMensajeEjecucion("la consulta no se realizo, se presentaron errores tecnicos");	
 		}
-		return resultadoDTO;
+		return consultarComicTamanioNombre;
 	}
+	// Servicio para consultar el nombre, precio,estado de un comic
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	@Override
+	public ConsultarNombrePrecioEstadoDTO consultarNombrePrecioEstado(Long idComic) {
+		String consultaJpql = "SELECT new com.hbt.semillero.dto.ConsultarNombrePrecioEstadoDTO(c.nombre, c.precio, c.estadoEnum)  "
+				+ " FROM Comic c WHERE c.id = :idComic";
+		ConsultarNombrePrecioEstadoDTO ConsultarNombrePrecioEstadoDTO = new ConsultarNombrePrecioEstadoDTO();
+		try {
+				Query consultaNativa = em.createQuery(consultaJpql);
+				consultaNativa.setParameter("idComic", idComic);
+				ConsultarNombrePrecioEstadoDTO = (ConsultarNombrePrecioEstadoDTO) consultaNativa.getSingleResult();
+				ConsultarNombrePrecioEstadoDTO.setExitoso(true);
+				ConsultarNombrePrecioEstadoDTO.setMensajeEjecucion("Se ejecuto exitosamente la consulta");	
+		} catch (Exception e) {
+			ConsultarNombrePrecioEstadoDTO.setExitoso(false);
+			ConsultarNombrePrecioEstadoDTO.setMensajeEjecucion("Se ha presentado un error tecnico al consultar el comic");
+		}
+		return ConsultarNombrePrecioEstadoDTO;
+	}
+}
 
 	
 	
-}
+
+	
+	

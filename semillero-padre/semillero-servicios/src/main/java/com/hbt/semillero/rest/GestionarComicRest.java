@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.hbt.semillero.dto.ComicDTO;
 import com.hbt.semillero.dto.ConsultaNombrePrecioComicDTO;
+import com.hbt.semillero.dto.ConsultarNombrePrecioEstadoDTO;
 import com.hbt.semillero.dto.ResultadoDTO;
 import com.hbt.semillero.dto.consultarComicTamanioNombreDTO;
 import com.hbt.semillero.ejb.IGestionarComicLocal;
@@ -29,14 +30,14 @@ public class GestionarComicRest {
 	// esta linea no se que es lo que hace
 	@EJB
 	private IGestionarComicLocal gestionarComicLocal;
-	// metodo para administar la consulta de nombre y precio del comic rest
+	// metodo para administrar la consulta de nombre y precio del comic rest
 	@GET
 	@Path("/consultarNombrePrecioComic")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ConsultaNombrePrecioComicDTO consultarNombrePrecioComic(@QueryParam("idComic") Long idComic) {
 		return this.gestionarComicLocal.consultarNombrePrecioComic(idComic);
 	}
-	// metodo para administar la creacion del comic rest
+	// metodo para administrar la creacion del comic rest
 	@POST
 	@Path("/crearComic")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -51,34 +52,40 @@ public class GestionarComicRest {
 		}
 		return comicDTOResult;
 	} 
-	//metodo para administar la consulta de los  comics rest
+	//metodo para administrar la consulta de los  comics rest
 	@GET
 	@Path("/consultarComics")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<ComicDTO> consultarComics(){
 		return this.gestionarComicLocal.consultarComics();	
 	}
-	//metodo para administar la eliminacion del comic rest
-	@POST
+	//metodo para administrar la eliminacion del comic rest
+	@GET
 	@Path("/eliminarComic")
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	public  ResultadoDTO eliminarComic(@QueryParam("idComic") Long idComic){
 		return this.gestionarComicLocal.eliminarComic(idComic);	
 	}
-	//metodo para administar la consulta por nombre del comic rest
+	//metodo para administrar la consulta por nombre del comic rest
 	@GET
 	@Path("/consultarComicTamanioNombre")
 	@Produces(MediaType.APPLICATION_JSON)
 	public  consultarComicTamanioNombreDTO consultarComicTamanioNombre(@QueryParam("lengthComic") Short lengthComic){
 		return this.gestionarComicLocal.consultarComicTamanioNombre(lengthComic);	
 	}
-	//metodo para administar la actualizacion del comic rest
+	//metodo para administrar la actualizacion del comic rest
 	@POST
 	@Path("/actualizarComic")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public ResultadoDTO actualizarComic(@QueryParam("idComic") Long idComic) {
 		return this.gestionarComicLocal.actualizarComic(idComic);	
+	}
+	// metodo encargado de administrar 
+	@GET
+	@Path("/consultarNombrePrecioEstado")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ConsultarNombrePrecioEstadoDTO consultarNombrePrecioEstado(@QueryParam("idComic") Long idComic) {
+		return this.gestionarComicLocal.consultarNombrePrecioEstado(idComic);	
 	}
 }

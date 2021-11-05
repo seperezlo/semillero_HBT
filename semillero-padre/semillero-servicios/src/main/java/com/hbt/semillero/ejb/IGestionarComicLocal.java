@@ -6,6 +6,7 @@ import javax.ejb.Local;
 
 import com.hbt.semillero.dto.ComicDTO;
 import com.hbt.semillero.dto.ConsultaNombrePrecioComicDTO;
+import com.hbt.semillero.dto.ConsultarNombrePrecioEstadoDTO;
 import com.hbt.semillero.dto.ResultadoDTO;
 import com.hbt.semillero.dto.consultarComicTamanioNombreDTO;
 
@@ -31,4 +32,7 @@ public interface IGestionarComicLocal {
 	public List<ComicDTO> consultarComics();
 	// implemta el servicio para consultar nombre de los comics 
 	public  consultarComicTamanioNombreDTO consultarComicTamanioNombre(Short lengthComic);
+	// implementa el servicio para consultar nombre, precio y estado de un comic
+	public ConsultarNombrePrecioEstadoDTO consultarNombrePrecioEstado(Long idComic);
+	
 }
