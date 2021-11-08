@@ -49,7 +49,7 @@ public class SemilleroJPQLRest {
 	@GET
 	@Path("/test")
 	@Produces(MediaType.APPLICATION_JSON)
-	@SuppressWarnings("unchecked")
+	//@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public String obtenerUnComic() {
 		//BasicConfigurator.configure();
@@ -74,9 +74,9 @@ public class SemilleroJPQLRest {
 			comic = (Comic) queryUnComicConParametro.getSingleResult();
 			
 			//Consulta todos los comis existentes SELECT * FROM COMIC
-			String findAllComic = " SELECT cm FROM Comic cm ";
-			Query queryFindAllComic = em.createQuery(findAllComic);
-			List<Comic> listaComics = queryFindAllComic.getResultList();
+			//String findAllComic = " SELECT cm FROM Comic cm ";
+			//Query queryFindAllComic = em.createQuery(findAllComic);
+			//List<Comic> listaComics = queryFindAllComic.getResultList();
 			
 			// BLOQUE PARA GENERACION DE EXCEPCIONES
 //			String consultaUnComicConException = " SELECT c FROM Comic c WHERE c.id = :idComic "
@@ -143,9 +143,9 @@ public class SemilleroJPQLRest {
 			String consulta = "SELECT SCNOMBRE, SCPRECIO FROM COMIC WHERE SCID = :idComic";
 			Query consultaNativa = em.createNativeQuery(consulta);
 			consultaNativa.setParameter("idComic", 41L);
-			Object[] data = (Object[]) consultaNativa.getSingleResult();
-			String nombre = (String) data[0];
-			BigDecimal precio = (BigDecimal) data[1];
+			//Object[] data = (Object[]) consultaNativa.getSingleResult();
+			//String nombre = (String) data[0];
+			//BigDecimal precio = (BigDecimal) data[1];
 			
 //			
 //			comicSuperman = this.consultarComicPorNombre(comicSuperman);

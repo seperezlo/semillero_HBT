@@ -1,6 +1,7 @@
 package com.hbt.semillero.rest;
 
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -12,12 +13,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+
+import com.hbt.semillero.dto.ActualizarPrecioCantidadEstadoDTO;
 import com.hbt.semillero.dto.ComicDTO;
 import com.hbt.semillero.dto.ConsultaNombrePrecioComicDTO;
 import com.hbt.semillero.dto.ConsultarNombrePrecioEstadoDTO;
 import com.hbt.semillero.dto.ResultadoDTO;
 import com.hbt.semillero.dto.consultarComicTamanioNombreDTO;
 import com.hbt.semillero.ejb.IGestionarComicLocal;
+import com.hbt.semillero.enums.EstadoEnum;
 /**
  * 
  * <b>Descripción:<b> Clase que gestiona los servicios de comic rest
@@ -78,14 +82,23 @@ public class GestionarComicRest {
 	@Path("/actualizarComic")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ResultadoDTO actualizarComic(@QueryParam("idComic") Long idComic) {
-		return this.gestionarComicLocal.actualizarComic(idComic);	
+	public ResultadoDTO actualizarComic(@QueryParam("idComic") Long idComic, @QueryParam("estadoEnum")EstadoEnum estadoEnum) {
+		return this.gestionarComicLocal.actualizarComic(idComic, estadoEnum);	
 	}
-	// metodo encargado de administrar 
+	// metodo encargado de administrar la consulta nombre precio estado de un comic
 	@GET
 	@Path("/consultarNombrePrecioEstado")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ConsultarNombrePrecioEstadoDTO consultarNombrePrecioEstado(@QueryParam("idComic") Long idComic) {
 		return this.gestionarComicLocal.consultarNombrePrecioEstado(idComic);	
+	}
+	//metodo encargado de actualizar precio estado cantidad de un comic
+	@POST
+	@Path("/actualizarPrecioCantidadEstadoComic")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public ActualizarPrecioCantidadEstadoDTO actualizarPrecioCantidadEstadoComic(@QueryParam("idComic") Long idComic,@QueryParam("precio")BigDecimal precio,@QueryParam("estadoEnum")EstadoEnum estadoEnum,@QueryParam("cantidad") Long cantidad) {
+		return this.gestionarComicLocal.actualizarPrecioCantidadEstadoComic(idComic, precio, estadoEnum,  cantidad);
+		
 	}
 }

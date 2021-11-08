@@ -1,5 +1,6 @@
 package com.hbt.semillero.ejb;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -11,6 +12,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+
+import com.hbt.semillero.dto.ActualizarPrecioCantidadEstadoDTO;
 import com.hbt.semillero.dto.ComicDTO;
 import com.hbt.semillero.dto.ConsultaNombrePrecioComicDTO;
 import com.hbt.semillero.dto.ConsultarNombrePrecioEstadoDTO;
@@ -70,13 +73,13 @@ public class GestionarComicBean  implements IGestionarComicLocal {
 	// servicio para actualizar un comic referenciado por su SCId
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public ResultadoDTO actualizarComic(Long idComic) {
+	public ResultadoDTO actualizarComic(Long idComic, EstadoEnum estadoEnum ) {
 		ResultadoDTO update =new  ResultadoDTO();
 		try {
-			String actualizarComic = " UPDATE Comic c SET c.estadoEnum = :estado WHERE c.id = :idComic";
+			String actualizarComic = " UPDATE Comic c SET c.estadoEnum = :estadoEnum WHERE c.id = :idComic";
 			Query queryActualizar = em.createQuery(actualizarComic);
-			queryActualizar.setParameter("estado", EstadoEnum.INACTIVO);
 			queryActualizar.setParameter("idComic", idComic);
+			queryActualizar.setParameter("estadoEnum",estadoEnum);
 			queryActualizar.executeUpdate();
 			update.setExitoso(true);
 			update.setMensajeEjecucion("el comic se actualizo exitosamente");
@@ -210,6 +213,28 @@ public class GestionarComicBean  implements IGestionarComicLocal {
 			ConsultarNombrePrecioEstadoDTO.setMensajeEjecucion("Se ha presentado un error tecnico al consultar el comic");
 		}
 		return ConsultarNombrePrecioEstadoDTO;
+	}
+	// servicio para actualizar precio estado cantidad de comics
+	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public ActualizarPrecioCantidadEstadoDTO actualizarPrecioCantidadEstadoComic(Long idComic,BigDecimal precio,EstadoEnum estadoEnum, Long cantidad) {
+		ActualizarPrecioCantidadEstadoDTO updatePrecioComic =new  ActualizarPrecioCantidadEstadoDTO();
+		try {
+			String actualizarPrecioCantidadEstadoComic = " UPDATE Comic c SET  c.precio = :precio, c.estadoEnum = :estadoEnum, c.cantidad =: cantidad "
+					+ " WHERE c.id = :idComic";
+			Query queryActualizar = em.createQuery(actualizarPrecioCantidadEstadoComic);
+			queryActualizar.setParameter("idComic", idComic);
+			queryActualizar.setParameter("precio", precio);
+			queryActualizar.setParameter("estadoEnum", estadoEnum);
+			queryActualizar.setParameter("cantidad", cantidad);
+			queryActualizar.executeUpdate();
+			updatePrecioComic.setExitoso(true);
+			updatePrecioComic.setMensajeEjecucion("el comic se actualizo exitosamente");
+		}catch (Exception e) {
+			updatePrecioComic.setExitoso(false);
+			updatePrecioComic.setMensajeEjecucion("la actualizacion no se realizo, se presentaron errores tecnicos");
+		}
+		return updatePrecioComic;
 	}
 }
 
