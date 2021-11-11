@@ -5,7 +5,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.hbt.semillero.dto.ComicDTO;
@@ -23,7 +22,7 @@ public class GestionarCompraComicRest {
 	@Path("/comprarComic")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public ComicDTO  comprarComic(@QueryParam("idComic") Long idComic , @QueryParam("cantidad") Long cantidad) {
+	public ComicDTO  comprarComic( Long idComic ,  Long cantidad) {
 		ComicDTO compraComic = new ComicDTO();
 		try {
 			compraComic = this.gestionarCompraLocal.comprarComic(idComic , cantidad);
