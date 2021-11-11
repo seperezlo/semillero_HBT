@@ -3,6 +3,14 @@ package com.hbt.semillero.dto;
 import java.math.BigDecimal;
 
 import com.hbt.semillero.enums.EstadoEnum;
+/**
+ * 
+ * <b>Descripción:<b> Clase que determina los atributos para implementar un servicio DTO los atirbutos a actualizar son 
+ * precio estado cantidad 
+ * <b>Caso de Uso:<b> 
+ * @author SEDIEL
+ * @version
+ */
 
 public class ActualizarPrecioCantidadEstadoDTO extends ResultadoDTO{
 	

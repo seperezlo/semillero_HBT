@@ -14,6 +14,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 
+
 import com.hbt.semillero.dto.ActualizarPrecioCantidadEstadoDTO;
 import com.hbt.semillero.dto.ComicDTO;
 import com.hbt.semillero.dto.ConsultaNombrePrecioComicDTO;
@@ -31,7 +32,7 @@ import com.hbt.semillero.enums.EstadoEnum;
  */
 @Path("/gestionarComic")
 public class GestionarComicRest {
-	// esta linea no se que es lo que hace
+	// esta linea lo que hace poder acceder a logica que contiene los servicios 
 	@EJB
 	private IGestionarComicLocal gestionarComicLocal;
 	// metodo para administrar la consulta de nombre y precio del comic rest
@@ -64,10 +65,10 @@ public class GestionarComicRest {
 		return this.gestionarComicLocal.consultarComics();	
 	}
 	//metodo para administrar la eliminacion del comic rest
-	@GET
+	@POST
 	@Path("/eliminarComic")
 	@Produces(MediaType.APPLICATION_JSON)
-	public  ResultadoDTO eliminarComic(@QueryParam("idComic") Long idComic){
+	public  ResultadoDTO eliminarComic(Long idComic){
 		return this.gestionarComicLocal.eliminarComic(idComic);	
 	}
 	//metodo para administrar la consulta por nombre del comic rest
@@ -82,8 +83,8 @@ public class GestionarComicRest {
 	@Path("/actualizarComic")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ResultadoDTO actualizarComic(@QueryParam("idComic") Long idComic, @QueryParam("estadoEnum")EstadoEnum estadoEnum) {
-		return this.gestionarComicLocal.actualizarComic(idComic, estadoEnum);	
+	public ComicDTO actualizarComic( ComicDTO comicDTO) {
+		return this.gestionarComicLocal.actualizarComic(comicDTO);	
 	}
 	// metodo encargado de administrar la consulta nombre precio estado de un comic
 	@GET
@@ -97,8 +98,15 @@ public class GestionarComicRest {
 	@Path("/actualizarPrecioCantidadEstadoComic")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ActualizarPrecioCantidadEstadoDTO actualizarPrecioCantidadEstadoComic(@QueryParam("idComic") Long idComic,@QueryParam("precio")BigDecimal precio,@QueryParam("estadoEnum")EstadoEnum estadoEnum,@QueryParam("cantidad") Long cantidad) {
+	public ActualizarPrecioCantidadEstadoDTO actualizarPrecioCantidadEstadoComic( Long idComic,BigDecimal precio,EstadoEnum estadoEnum, Long cantidad) {
 		return this.gestionarComicLocal.actualizarPrecioCantidadEstadoComic(idComic, precio, estadoEnum,  cantidad);
 		
+	}
+	@GET
+	@Path("/consultarComic")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ComicDTO consultarComic(@QueryParam("idComic") Long idComic) {
+		System.out.println("*** entro a comic***");
+		return this.gestionarComicLocal.consultarComic(idComic);	
 	}
 }

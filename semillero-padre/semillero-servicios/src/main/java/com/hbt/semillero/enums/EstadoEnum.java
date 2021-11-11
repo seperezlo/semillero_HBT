@@ -1,4 +1,11 @@
 package com.hbt.semillero.enums;
+/**
+ * 
+ * <b>Descripción:<b> Clase que determina el estado de un comic
+ * <b>Caso de Uso:<b> 
+ * @author SEDIEL
+ * @version
+ */
 
 public enum EstadoEnum {
 	ACTIVO("enum.estado.activo"), 

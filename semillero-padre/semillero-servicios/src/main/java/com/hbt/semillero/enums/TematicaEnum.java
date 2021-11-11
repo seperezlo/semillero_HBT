@@ -7,7 +7,7 @@ package com.hbt.semillero.enums;
  * <b>Descripción:<b> Clase que determina la enumeracion para representar los
  * tipos de tematica aceptados por un comic
  * 
- * @author ccastano
+ * @author SEDIEL
  * @version
  */
 public enum TematicaEnum {

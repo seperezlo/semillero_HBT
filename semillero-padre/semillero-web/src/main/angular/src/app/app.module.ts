@@ -10,6 +10,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { MenuComponent } from './semillero/componentes/menu/menu-component';
 import { BienvenidaComponent } from './semillero/componentes/home/bienvenida-component';
+import { GestionarComicComponent } from './semillero/componentes/gestionarComic/gestionar-comic/gestionar-comic.component';
+
 
 // DTOs
 
@@ -19,6 +21,8 @@ import { BienvenidaComponent } from './semillero/componentes/home/bienvenida-com
     AppComponent,
     MenuComponent,
     BienvenidaComponent,
+    GestionarComicComponent,
+   
   ],
   imports: [
     BrowserModule,

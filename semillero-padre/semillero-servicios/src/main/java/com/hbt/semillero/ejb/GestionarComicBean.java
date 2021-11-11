@@ -1,6 +1,7 @@
 package com.hbt.semillero.ejb;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -61,6 +62,9 @@ public class GestionarComicBean  implements IGestionarComicLocal {
 		
 		if(comicDTO.getNombre() == null) {
 			throw new Exception("El campo nombre es requerido");
+		}else if(comicDTO.getEstadoEnum() == null) {
+			comicDTO.setEstadoEnum(EstadoEnum.ACTIVO);
+			comicDTO.setFechaVenta(LocalDate.now());
 		}
 		ComicDTO comicDTOResult = null;
 		Comic comic = this.convertirComicDTOToComic(comicDTO);
@@ -73,39 +77,36 @@ public class GestionarComicBean  implements IGestionarComicLocal {
 	// servicio para actualizar un comic referenciado por su SCId
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public ResultadoDTO actualizarComic(Long idComic, EstadoEnum estadoEnum ) {
-		ResultadoDTO update =new  ResultadoDTO();
-		try {
-			String actualizarComic = " UPDATE Comic c SET c.estadoEnum = :estadoEnum WHERE c.id = :idComic";
-			Query queryActualizar = em.createQuery(actualizarComic);
-			queryActualizar.setParameter("idComic", idComic);
-			queryActualizar.setParameter("estadoEnum",estadoEnum);
-			queryActualizar.executeUpdate();
-			update.setExitoso(true);
-			update.setMensajeEjecucion("el comic se actualizo exitosamente");
-		}catch (Exception e) {
-			update.setExitoso(false);
-			update.setMensajeEjecucion("la actualizacion no se realizo, se presentaron errores tecnicos");	
+	public ComicDTO actualizarComic(ComicDTO comicDTO) {
+		if(comicDTO.getEstadoEnum() == null) {
+			comicDTO.setEstadoEnum(EstadoEnum.ACTIVO);
+			comicDTO.setFechaVenta(LocalDate.now());
 		}
-		return update;
+		ComicDTO comicDTOFinal = null;
+		Comic comicActualizado = this.convertirComicDTOToComic(comicDTO);
+		em.merge(comicActualizado);
+		comicDTOFinal = this.convertirComicToComicDTO(comicActualizado);
+		comicDTOFinal.setExitoso(true);
+		comicDTOFinal.setMensajeEjecucion("El comic ha sido creado exitosamente");
+		return comicDTOFinal;
 	}
     // servicio para eliminar un comic referenciado por su SCId 
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ResultadoDTO eliminarComic(Long idComic) {
-		String eliminarComic = " DELETE FROM Comic dc WHERE dc.id = :idComic";
-		ResultadoDTO eliminado =  new ResultadoDTO();
+		String eliminarComic = " DELETE FROM Comic WHERE id = :idComic";
+		ResultadoDTO eliminar =  new ResultadoDTO();
 		try {
 			Query queryEliminar = em.createQuery(eliminarComic);
 			queryEliminar.setParameter("idComic", idComic);
 			queryEliminar.executeUpdate();
-			eliminado.setExitoso(true);
-			eliminado.setMensajeEjecucion("se realizo la eliminacion exitosamente");
+			eliminar.setExitoso(true);
+			eliminar.setMensajeEjecucion("se realizo la eliminacion exitosamente");
 		}catch (Exception e) {
-			eliminado.setExitoso(false);
-			eliminado.setMensajeEjecucion("la eliminacion no se realizo, se presentaron errores tecnicos");	
+			eliminar.setExitoso(false);
+			eliminar.setMensajeEjecucion("la eliminacion no se realizo, se presentaron errores tecnicos");	
 		}
-		return eliminado;
+		return eliminar;
 	}
 	// servicio para consultar la lista de comics 
 	@SuppressWarnings("unchecked")
@@ -115,8 +116,20 @@ public class GestionarComicBean  implements IGestionarComicLocal {
 		String findAllComic = " SELECT cm FROM Comic cm ";
 		Query queryFindAllComic = em.createQuery(findAllComic);
 		List<ComicDTO> listaComics = queryFindAllComic.getResultList();
-		
 		return listaComics;
+	}
+	
+	// servicio para consultar la informacion de un comic
+	@Override
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public ComicDTO consultarComic(Long idComic) {
+		String consulta = "SELECT s FROM Comic s WHERE s.id =:idComic";
+		Query consultaQuery = em.createQuery(consulta);
+		consultaQuery.setParameter("idComic", idComic);	
+		Comic consultaComic = (Comic) consultaQuery.getSingleResult();
+		ComicDTO consultaComicDTO =convertirComicToComicDTO(consultaComic);
+		consultaComicDTO.setExitoso(true);
+	return consultaComicDTO ;
 	}
 	
 	
@@ -228,6 +241,7 @@ public class GestionarComicBean  implements IGestionarComicLocal {
 			queryActualizar.setParameter("estadoEnum", estadoEnum);
 			queryActualizar.setParameter("cantidad", cantidad);
 			queryActualizar.executeUpdate();
+
 			updatePrecioComic.setExitoso(true);
 			updatePrecioComic.setMensajeEjecucion("el comic se actualizo exitosamente");
 		}catch (Exception e) {

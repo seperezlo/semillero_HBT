@@ -1,7 +1,15 @@
 package com.hbt.semillero.dto;
 
 import java.util.ArrayList;
+
 import java.util.List;
+/**
+ * 
+ * <b>Descripción:<b> Clase que determina la consulta para determinar los nombres de los comics y los clasifica segun su tamaño
+ * <b>Caso de Uso:<b> 
+ * @author SEDIEL
+ * @version
+ */
 
 public class consultarComicTamanioNombreDTO extends ResultadoDTO {
 
